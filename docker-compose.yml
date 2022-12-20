@@ -1,16 +1,27 @@
-# Add redis and a web service
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+    redis-data:
+        driver: local
+
 services:
-  redis:
-    image: redislabs/redismod
-    container_name: redis
-    ports:
-      - '6379:6379'
-  web:
-    build: .
-    container_name: web
-    ports:
-      - "5000:5000"
-    volumes:
-      - .:/code
-    depends_on:
-      - redis
+    redis:
+        image: redislabs/redismod
+        container_name: redis
+        volumes:
+            - redis-data:/data
+        ports:
+            - '6379:6379'
+        networks:
+            - my-network
+    web:
+        build: .
+        container_name: web
+        ports:
+            - "5000:5000"
+        depends_on:
+            - redis
+        networks:
+            - my-network
