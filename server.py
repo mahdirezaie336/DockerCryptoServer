@@ -1,9 +1,8 @@
 # Use Flast
 import flask
 import requests
-from config import API_KEY, MINUTES_TO_LIVE
 import redis
-import sys
+import os
 from datetime import timedelta
 
 # Create the application.
@@ -11,6 +10,11 @@ APP = flask.Flask(__name__)
 
 # Create redis object
 r = redis.Redis(host='redis', port=6379)
+
+# Get enivronment variable. If not exist set to default
+API_KEY = os.environ.get('API_KEY', 'demo')
+PORT_NUMBER = os.environ.get('PORT_NUMBER', 5000)
+MINUTES_TO_LIVE = os.environ.get('MINUTES_TO_LIVE', 5)
 
 
 # A route to get the current price of input cryptocurrency
@@ -33,7 +37,4 @@ def api_all(crypto):
 
 # Run the application.
 if __name__ == '__main__':
-    # Get args from input and find port
-    args = sys.argv
-    port = int(args[1])
-    APP.run(host='0.0.0.0', port=port)
+    APP.run(host='0.0.0.0', port=PORT_NUMBER, debug=True)
