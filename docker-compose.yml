@@ -18,6 +18,7 @@ services:
             - my-network
     web:
         build: .
+        image: crypto-server:latest
         container_name: web
         ports:
             - "5000:5000"
