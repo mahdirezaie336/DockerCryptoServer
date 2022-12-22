@@ -11,10 +11,11 @@ APP = flask.Flask(__name__)
 # Create redis object
 r = redis.Redis(host='redis', port=6379)
 
-# Get enivronment variable. If not exist set to default
+# Get environment variable. If not exist set to default
 API_KEY = os.environ.get('API_KEY', 'demo')
-PORT_NUMBER = os.environ.get('PORT_NUMBER', 5000)
-MINUTES_TO_LIVE = os.environ.get('MINUTES_TO_LIVE', 5)
+PORT_NUMBER = int(os.environ.get('PORT_NUMBER', 5000))
+MINUTES_TO_LIVE = int(os.environ.get('MINUTES_TO_LIVE', 5))
+DEFAULT_CRYPTO = os.environ.get('DEFAULT_CRYPTO', 'BTC')
 
 
 # A route to get the current price of input cryptocurrency
@@ -33,6 +34,11 @@ def api_all(crypto):
     name = data['name']
     r.setex(crypto, timedelta(minutes=MINUTES_TO_LIVE), price)
     return {'name': name, 'price': price}
+
+
+@APP.route('/', methods=['GET'])
+def api_root():
+    return api_all(DEFAULT_CRYPTO)
 
 
 # Run the application.
