@@ -32,3 +32,4 @@ services:
             - PORT_NUMBER=5000
             - DEFAULT_CRYPTO=BTC
             - API_ADDRESS=https://rest.coinapi.io/v1/assets/
+            - REDIS_SERVER=redis

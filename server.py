@@ -8,15 +8,16 @@ from datetime import timedelta
 # Create the application.
 APP = flask.Flask(__name__)
 
-# Create redis object
-r = redis.Redis(host='redis', port=6379)
-
 # Get environment variable. If not exist set to default
 API_KEY = os.environ.get('API_KEY', 'demo')
 PORT_NUMBER = int(os.environ.get('PORT_NUMBER', 5000))
 MINUTES_TO_LIVE = int(os.environ.get('MINUTES_TO_LIVE', 5))
 DEFAULT_CRYPTO = os.environ.get('DEFAULT_CRYPTO', 'BTC')
 API_ADDRESS = os.environ.get('API_ADDRESS', 'https://rest.coinapi.io/v1/assets/')
+REDIS_SERVER = os.environ.get('REDIS_SERVER', 'redis-server-service')
+
+# Create redis object
+r = redis.Redis(host=REDIS_SERVER, port=6379)
 
 
 # A route to get the current price of input cryptocurrency
