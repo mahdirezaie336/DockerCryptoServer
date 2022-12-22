@@ -31,3 +31,4 @@ services:
             - MINUTES_TO_LIVE=5
             - PORT_NUMBER=5000
             - DEFAULT_CRYPTO=BTC
+            - API_ADDRESS=https://rest.coinapi.io/v1/assets/

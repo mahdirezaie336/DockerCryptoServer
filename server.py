@@ -16,6 +16,7 @@ API_KEY = os.environ.get('API_KEY', 'demo')
 PORT_NUMBER = int(os.environ.get('PORT_NUMBER', 5000))
 MINUTES_TO_LIVE = int(os.environ.get('MINUTES_TO_LIVE', 5))
 DEFAULT_CRYPTO = os.environ.get('DEFAULT_CRYPTO', 'BTC')
+API_ADDRESS = os.environ.get('API_ADDRESS', 'https://rest.coinapi.io/v1/assets/')
 
 
 # A route to get the current price of input cryptocurrency
@@ -26,7 +27,7 @@ def api_all(crypto):
         return {'name': crypto, 'price': r.get(crypto)}
 
     # Get data from the API
-    response = requests.get(f'https://rest.coinapi.io/v1/assets/{crypto}', headers={'X-CoinAPI-Key': API_KEY})
+    response = requests.get(f'{API_ADDRESS}{crypto}', headers={'X-CoinAPI-Key': API_KEY})
 
     # Convert to JSON
     data = response.json()[0]
