@@ -3,6 +3,7 @@ import flask
 import requests
 import redis
 import os
+import socket
 from datetime import timedelta
 
 # Create the application.
@@ -23,9 +24,12 @@ r = redis.Redis(host=REDIS_SERVER, port=6379)
 # A route to get the current price of input cryptocurrency
 @APP.route('/<crypto>', methods=['GET'])
 def api_all(crypto):
+    # Lower crypto name
+    crypto = crypto.lower()
+
     # Check if is cached in redis and less than 5 minutes is passed
     if r.exists(crypto) and r.ttl(crypto) > 0:
-        return {'name': crypto, 'price': r.get(crypto)}
+        return {'name': crypto, 'price': r.get(crypto).decode(), 'hostname': socket.gethostname(), 'from_cache': True}
 
     # Get data from the API
     response = requests.get(f'{API_ADDRESS}{crypto}', headers={'X-CoinAPI-Key': API_KEY})
@@ -35,7 +39,7 @@ def api_all(crypto):
     price = data['price_usd']
     name = data['name']
     r.setex(crypto, timedelta(minutes=MINUTES_TO_LIVE), price)
-    return {'name': name, 'price': price}
+    return {'name': name, 'price': price, 'hostname': socket.gethostname()}
 
 
 @APP.route('/', methods=['GET'])
