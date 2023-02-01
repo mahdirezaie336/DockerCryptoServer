@@ -27,9 +27,9 @@ services:
         networks:
             - my-network
         environment:
-            - API_KEY=A0398331-92F1-4747-B9CC-73E5B7E423FE
+            - API_KEY=<YOUR API KEY>
             - MINUTES_TO_LIVE=5
             - PORT_NUMBER=5000
-            - DEFAULT_CRYPTO=BTC
+            - DEFAULT_CRYPTO=ETH
             - API_ADDRESS=https://rest.coinapi.io/v1/assets/
             - REDIS_SERVER=redis
